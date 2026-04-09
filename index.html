@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPAR | Store Manager Portal</title>
+    <style>
+        /* SPAR Brand Colors: Red #da291c, Green #007a33, White #ffffff */
+        :root {
+            --spar-red: #da291c;
+            --spar-green: #007a33;
+            --light-grey: #f4f4f4;
+            --dark-text: #333333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-grey);
+            color: var(--dark-text);
+        }
+
+        /* Header Styling */
+        header {
+            background-color: white;
+            border-bottom: 5px solid var(--spar-red);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .spar-logo-img {
+            height: 45px;
+            width: auto;
+            display: block;
+        }
+
+        .header-title {
+            color: var(--spar-green);
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .welcome-banner {
+            background-color: var(--spar-green);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .welcome-banner h2 {
+            font-size: 1.5rem;
+        }
+
+        /* Grid Layout for Updates */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .section-title {
+            color: var(--spar-red);
+            border-bottom: 2px solid var(--spar-red);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+        }
+
+        /* Card Styling */
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border-left: 5px solid var(--spar-green);
+            transition: transform 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+        }
+
+        .card.pricing-card {
+            border-left-color: var(--spar-red);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+
+        .card-date {
+            font-size: 0.85rem;
+            color: #777;
+            background: #eee;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .card h3 {
+            margin-bottom: 10px;
+            color: var(--dark-text);
+        }
+
+        .card p {
+            color: #555;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+        }
+
+        .btn-green {
+            background-color: var(--spar-green);
+            color: white;
+        }
+
+        .btn-green:hover {
+            background-color: #005a25;
+        }
+
+        .btn-red {
+            background-color: var(--spar-red);
+            color: white;
+        }
+
+        .btn-red:hover {
+            background-color: #b01f15;
+        }
+
+        /* Modal Styling */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal {
+            background: white;
+            width: 90%;
+            max-width: 600px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal-header {
+            background: var(--spar-green);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header.pricing-modal {
+            background: var(--spar-red);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .modal-body {
+            padding: 30px;
+            line-height: 1.6;
+        }
+
+        .modal-body ul {
+            margin-top: 15px;
+            margin-left: 20px;
+        }
+
+        .modal-body li {
+            margin-bottom: 10px;
+        }
+
+        .action-items {
+            margin-top: 20px;
+            background: var(--light-grey);
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #ffb81c; /* Yellow accent for attention */
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="https://www.spar.co.za/SPAR/media/img/SPAR_Logo_1.jpg" alt="SPAR Logo" class="spar-logo-img">
+        </div>
+        <div class="header-title">Store Manager Portal - HQ Updates</div>
+    </header>
+
+    <div class="container">
+        <div class="welcome-banner">
+            <h2>Welcome, Store Manager</h2>
+            <span id="current-date"></span>
+        </div>
+
+        <div class="dashboard-grid">
+            <div>
+                <h2 class="section-title">Seasonal Campaigns</h2>
+                <div id="campaigns-container"></div>
+            </div>
+
+            <div>
+                <h2 class="section-title">Pricing & Promotion Updates</h2>
+                <div id="pricing-container"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="info-modal">
+        <div class="modal">
+            <div class="modal-header" id="modal-header">
+                <h3 id="modal-title">Update Title</h3>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="modal-content"></div>
+                <div class="action-items">
+                    <strong>Manager Action Required:</strong>
+                    <p id="modal-action"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Set Current Date in Banner
+        const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-GB', dateOptions);
+
+        // Helper function to generate dynamic dates relative to "today"
+        function getRelativeDate(daysOffset) {
+            const date = new Date();
+            date.setDate(date.getDate() + daysOffset);
+            return date.toLocaleDateString('en-GB', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+
+        // HQ Data (Simulated API response with dynamic dates)
+        const hqUpdates = {
+            campaigns: [
+                {
+                    id: 'c1',
+                    title: 'Summer BBQ Bonanza ☀️',
+                    date: getRelativeDate(0), // Shows today's date
+                    summary: 'Get ready for summer! Our new BBQ campaign launches next week. Focus on fresh meats, buns, and charcoal displays at the store front.',
+                    details: `
+                        <p>The <strong>Summer BBQ Bonanza</strong> is our biggest Q2 push. National television and radio ads will begin airing shortly.</p>
+                        <ul>
+                            <li><strong>Gondola Ends:</strong> Dedicate at least two front gondola ends to BBQ essentials (Ketchup, Mustard, Baps, Charcoal).</li>
+                            <li><strong>Fresh Meat:</strong> Ensure butchery and chilled meat sections are fully stocked by 10 AM daily.</li>
+                            <li><strong>POS Material:</strong> New hanging signs and shelf-talkers should have arrived via the latest delivery.</li>
+                        </ul>
+                    `,
+                    action: 'Install new POS materials by Sunday evening. Brief staff on the "3 for £10" meat mix-and-match offer.'
+                },
+                {
+                    id: 'c2',
+                    title: 'Local Heroes Produce Drive 🚜',
+                    date: getRelativeDate(-3), // Shows date from 3 days ago
+                    summary: 'Highlighting our commitment to local farmers. New branding rollout for regional fresh fruit and vegetables.',
+                    details: `
+                        <p>Customers are increasingly looking for locally sourced goods. The <strong>Local Heroes</strong> campaign highlights products sourced within a 50-mile radius of your store.</p>
+                        <ul>
+                            <li>Green crates to replace standard black crates in the produce aisle.</li>
+                            <li>Feature local supplier spotlight cards next to relevant products.</li>
+                        </ul>
+                    `,
+                    action: 'Audit current fresh produce stock and map local items to the new green crate displays.'
+                }
+            ],
+            pricing: [
+                {
+                    id: 'p1',
+                    title: 'Dairy Price Match Guarantee 🥛',
+                    date: getRelativeDate(-1), // Shows yesterday's date
+                    summary: 'Immediate price drops on own-brand 2-pint and 4-pint milk to remain competitive with local supermarkets.',
+                    details: `
+                        <p>To maintain our competitive edge in daily essentials, Corporate has authorized an immediate price reduction on SPAR own-brand milk.</p>
+                        <ul>
+                            <li><strong>SPAR Semi-Skimmed 2 Pints:</strong> Drop from £1.30 to £1.20</li>
+                            <li><strong>SPAR Whole Milk 4 Pints:</strong> Drop from £1.75 to £1.65</li>
+                            <li>Margin compensation will be credited to your store account automatically at month-end.</li>
+                        </ul>
+                    `,
+                    action: 'Update shelf edge labels (SELs) immediately. Ensure EPOS systems have synced the new pricing overnight.'
+                },
+                {
+                    id: 'p2',
+                    title: 'Confectionery Multi-Buy Changes 🍫',
+                    date: getRelativeDate(-5), // Shows date from 5 days ago
+                    summary: 'End of the "Any 3 for £1.20" chocolate bar promotion. Transitioning to "2 for £1.00" on select lines.',
+                    details: `
+                        <p>Supplier costs on cocoa have risen, necessitating a shift in our impulse confectionery promotions at the till.</p>
+                        <ul>
+                            <li>Remove all "3 for £1.20" dump bin branding.</li>
+                            <li>New promo applies to standard size Mars, Snickers, Twix, and SPAR own-brand chocolate bars.</li>
+                        </ul>
+                    `,
+                    action: 'Remove old POS from till points. Restructure till-point dump bins to reflect the new 2 for £1.00 mechanics.'
+                }
+            ]
+        };
+
+        // Render Functions
+        function renderCards() {
+            const campaignsContainer = document.getElementById('campaigns-container');
+            const pricingContainer = document.getElementById('pricing-container');
+
+            // Render Campaigns
+            hqUpdates.campaigns.forEach(item => {
+                campaignsContainer.innerHTML += `
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-date">${item.date}</span>
+                        </div>
+                        <h3>${item.title}</h3>
+                        <p>${item.summary}</p>
+                        <button class="btn btn-green" onclick="openModal('campaigns', '${item.id}')">View Briefing</button>
+                    </div>
+                `;
+            });
+
+            // Render Pricing
+            hqUpdates.pricing.forEach(item => {
+                pricingContainer.innerHTML += `
+                    <div class="card pricing-card">
+                        <div class="card-header">
+                            <span class="card-date">${item.date}</span>
+                        </div>
+                        <h3>${item.title}</h3>
+                        <p>${item.summary}</p>
+                        <button class="btn btn-red" onclick="openModal('pricing', '${item.id}')">View Pricing Data</button>
+                    </div>
+                `;
+            });
+        }
+
+        // Modal Logic
+        const modalOverlay = document.getElementById('info-modal');
+        const modalHeader = document.getElementById('modal-header');
+        const modalTitle = document.getElementById('modal-title');
+        const modalContent = document.getElementById('modal-content');
+        const modalAction = document.getElementById('modal-action');
+
+        function openModal(category, id) {
+            const data = hqUpdates[category].find(item => item.id === id);
+            if (!data) return;
+
+            modalTitle.textContent = data.title;
+            modalContent.innerHTML = data.details;
+            modalAction.textContent = data.action;
+
+            // Adjust header color based on category
+            if (category === 'pricing') {
+                modalHeader.classList.add('pricing-modal');
+            } else {
+                modalHeader.classList.remove('pricing-modal');
+            }
+
+            modalOverlay.style.display = 'flex';
+        }
+
+        function closeModal() {
+            modalOverlay.style.display = 'none';
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            if (event.target == modalOverlay) {
+                closeModal();
+            }
+        }
+
+        // Initialize App
+        window.onload = renderCards;
+    </script>
+</body>
+</html>
